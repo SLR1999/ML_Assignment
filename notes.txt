@@ -1,0 +1,6 @@
+fill in data
+normalize 
+mahalanobis distance(to remove ouliers)  (looking at feature space)
+we need to pca to reduce dimensionality
+
+glucose 0 won't help
