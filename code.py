@@ -51,16 +51,16 @@ newData = []
 newOutcome = []
 for var in range(len(data)):
     if var not in outliers_indices:
-        data[var].append(diabetes["Outcome"][var])
+        # data[var].append(diabetes["Outcome"][var])
         newData.append(data[var])
-        # newOutcome.append(diabetes["Outcome"][var])
+        newOutcome.append(diabetes["Outcome"][var])
 print (len(newOutcome))
 newData = np.array(newData)
 newOutcome = np.array(newOutcome)
 newData = normalize(newData,return_norm=True)[0]
 print(newData.shape)
-newData = np.append(newData,newOutcome, axis=1)
-X_train, X_test, y_train, y_test = train_test_split(newData.loc[:, newData.columns != 'Outcome'], newData['Outcome'], stratify=newData['Outcome'], random_state=66)
+# newData = np.append(newData,newOutcome, axis=1)
+X_train, X_test, y_train, y_test = train_test_split(newData, newOutcome, stratify=newOutcome, random_state=66)
 logreg = LogisticRegression().fit(X_train, y_train)
 print("Training set score: {:.3f}".format(logreg.score(X_train, y_train)))
 print("Test set score: {:.3f}".format(logreg.score(X_test, y_test)))
