@@ -5,6 +5,7 @@ import math
 from sklearn.preprocessing import normalize
 from sklearn.linear_model import LogisticRegression
 from sklearn.model_selection import train_test_split
+from sklearn.decomposition import PCA 
 from outlier import MahalanobisDist, MD_detectOutliers, is_pos_def
 
 diabetes = pd.read_csv('Pima_Indian_diabetes.csv')
@@ -60,7 +61,7 @@ newOutcome = np.array(newOutcome)
 newData = normalize(newData,return_norm=True)[0]
 print(newData.shape)
 # newData = np.append(newData,newOutcome, axis=1)
-X_train, X_test, y_train, y_test = train_test_split(newData, newOutcome, stratify=newOutcome, random_state=66)
+X_train, X_test, y_train, y_test = train_test_split(newData, newOutcome, stratify=newOutcome, random_state=0)
 logreg = LogisticRegression().fit(X_train, y_train)
 print("Training set score: {:.3f}".format(logreg.score(X_train, y_train)))
 print("Test set score: {:.3f}".format(logreg.score(X_test, y_test)))
