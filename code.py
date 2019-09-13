@@ -1,6 +1,7 @@
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
+import random
 import math
 from sklearn.preprocessing import normalize
 from sklearn.linear_model import LogisticRegression
@@ -39,30 +40,29 @@ for i in range(0, len(columnNames)):
 
 data = np.array([diabetes["FinalGlucose"], diabetes["FinalInsulin"], diabetes["FinalSkinThickness"], diabetes["FinalBMI"], diabetes["FinalDiabetesPedigreeFunction"], diabetes["FinalBloodPressure"], diabetes["FinalPregnancies"], diabetes["FinalAge"]])
 data = data.T
+outcome = np.array(diabetes["Outcome"])
 
-outliers_indices = MD_detectOutliers(data)
+X_train, X_test, y_train, y_test = train_test_split(data, outcome, stratify=outcome, random_state=random.randint(13,5231))
+
+outliers_indices = MD_detectOutliers(X_train)
 
 print("Outliers Indices: {}\n".format(outliers_indices))
 print("Outliers:")
-# for ii in outliers_indices:
-#     print(data[ii])
 print(len(outliers_indices))
+
 newData = []
 newOutcome = []
-for var in range(len(data)):
+for var in range(len(X_train)):
     if var not in outliers_indices:
-        # data[var].append(diabetes["Outcome"][var])
-        newData.append(data[var])
-        newOutcome.append(diabetes["Outcome"][var])
+        newData.append(X_train[var])
+        newOutcome.append(y_train[var])
 print (len(newOutcome))
 newData = np.array(newData)
 newOutcome = np.array(newOutcome)
 newData = normalize(newData,return_norm=True)[0]
 print(newData.shape)
-# newData = np.append(newData,newOutcome, axis=1)
-X_train, X_test, y_train, y_test = train_test_split(newData, newOutcome, stratify=newOutcome, random_state=66)
+
 logreg = LogisticRegression().fit(X_train, y_train)
 print("Training set score: {:.3f}".format(logreg.score(X_train, y_train)))
 print("Test set score: {:.3f}".format(logreg.score(X_test, y_test)))
-
 
