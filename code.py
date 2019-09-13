@@ -45,6 +45,10 @@ outcome = np.array(diabetes["Outcome"])
 
 X_train, X_test, y_train, y_test = train_test_split(data, outcome, stratify=outcome, random_state=random.randint(13,5231))
 
+pca = PCA(n_components = 7) 
+X_train = pca.fit_transform(X_train) 
+X_test = pca.transform(X_test) 
+
 outliers_indices = MD_detectOutliers(X_train)
 
 print("Outliers Indices: {}\n".format(outliers_indices))
