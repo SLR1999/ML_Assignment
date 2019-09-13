@@ -54,7 +54,7 @@ newData = []
 newOutcome = []
 for var in range(len(X_train)):
     if var not in outliers_indices:
-        newData.append(data[var])
+        newData.append(X_train[var])
         newOutcome.append(y_train[var])
 print (len(newOutcome))
 newData = np.array(newData)
