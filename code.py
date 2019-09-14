@@ -5,8 +5,10 @@ import matplotlib.pyplot as plt
 from sklearn.preprocessing import normalize
 from sklearn.linear_model import LogisticRegression
 from sklearn.model_selection import train_test_split
+from sklearn.metrics import confusion_matrix
 from sklearn.decomposition import PCA 
 from outlier import MahalanobisDist, MD_detectOutliers
+from confusionMatrix import plot_confusion_matrix
 
 '''Reading csv file into a dataframe named diabetes'''
 diabetes = pd.read_csv('Pima_Indian_diabetes.csv')
@@ -58,7 +60,7 @@ for i in range(0, len(columnNames)):
     # plt.show()
 
 '''Making a numpy array (of all the features) after filling in missing data and removing zero outliers'''
-data = np.array([diabetes["FinalGlucose"], diabetes["FinalInsulin"], diabetes["FinalSkinThickness"], diabetes["FinalBMI"], diabetes["FinalDiabetesPedigreeFunction"], diabetes["FinalBloodPressure"], diabetes["FinalPregnancies"], diabetes["FinalAge"]])
+data = np.array([diabetes["FinalGlucose"], diabetes["FinalInsulin"], diabetes["FinalBMI"], diabetes["FinalDiabetesPedigreeFunction"], diabetes["FinalSkinThickness"], diabetes["FinalBloodPressure"], diabetes["FinalPregnancies"], diabetes["FinalAge"]])
 data = data.T
 
 '''Outcome vector'''
@@ -70,8 +72,8 @@ outcome = np.array(diabetes["Outcome"])
 '''Declaring variables to compute the average accuracy'''
 max_accuracy = -1
 
-numOfIter = 1000
-numOfIterVar = 1000
+numOfIter = 1
+numOfIterVar = 1
 accuracyTrainSum = 0
 accuracyTestSum = 0
 
@@ -117,7 +119,24 @@ while numOfIterVar > 0:
     accuracyTestSum += test_score
     numOfIterVar -= 1
 
+    '''Plotting the confusion matrix for the above model'''
+    y_pred = logreg.predict(X_test)
+    # Plot normalized confusion matrix
+    cm = confusion_matrix(y_test, y_pred)
+
+    print(cm)
+
+    # Show confusion matrix in a separate window
+    plt.matshow(cm)
+    plt.title('Confusion matrix')
+    plt.colorbar()
+    plt.ylabel('True label')
+    plt.xlabel('Predicted label')
+    plt.show()
+
 '''Printing the maximum as well as average accuracy achieved by the model'''
 print("Average Train set accuracy: {:.3f}".format(accuracyTrainSum/numOfIter))
 print("Average Test set accuracy: {:.3f}".format(accuracyTestSum/numOfIter))
 print("Maximum Accuracy: {:.3f}".format(max_accuracy))
+
+print(__doc__)
