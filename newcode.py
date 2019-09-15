@@ -7,7 +7,6 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import confusion_matrix
 from sklearn.decomposition import PCA 
-from confusionMatrix import plot_confusion_matrix
 from sklearn.preprocessing import StandardScaler
 
 '''The point above fence_low and below fence_high will be removed as they are considered outliers'''
@@ -22,9 +21,6 @@ def remove_outlier(df_in, col_name):
 
 '''Reading csv file into a dataframe named diabetes'''
 diabetes = pd.read_csv('Pima_Indian_diabetes.csv')
-
-# '''Plotting the heatmap of correlation matrix'''
-# sns.heatmap(diabetes.corr(),cmap='Blues',annot=False)
 
 '''Features as columns'''
 columnNames = ["Glucose", "Insulin", "BMI", "DiabetesPedigreeFunction", "SkinThickness", "BloodPressure", "Pregnancies", "Age"]
@@ -82,7 +78,7 @@ data = diabetes.drop(lremove, axis = 1)
 
 '''Here the outliers are removed column wise by calling the remove outlier function'''
 for var in range(len(columnNames)):
-    remove_outlier(data, "Final" + columnNames[var])
+    data = remove_outlier(data, "Final" + columnNames[var])
 
 # df = pd.DataFrame(np.random.randn(10,8), columns=lrequired)
 # boxplot = df.boxplot(column=lrequired)
@@ -112,7 +108,7 @@ principalDf = pd.DataFrame(data = principalComponentsDiabetes, columns = ['princ
 
 while numOfIterVar > 0: 
     print ("IN THE LOOP")
-    X_train, X_test, y_train, y_test = train_test_split(principalDf, y, random_state=5932, test_size=0.25)
+    X_train, X_test, y_train, y_test = train_test_split(principalDf, y, random_state=2124, test_size=0.25)
 
     # '''Logistic Regression'''
     logreg = LogisticRegression().fit(X_train, y_train)
@@ -149,3 +145,4 @@ print("Average Train set accuracy: {:.3f}".format(accuracyTrainSum/numOfIter))
 print("Average Test set accuracy: {:.3f}".format(accuracyTestSum/numOfIter))
 print("Max Accuracy random value: {:.3f}" .format(random_max_value))
 print("Maximum Accuracy: {:.3f}".format(max_accuracy))
+
