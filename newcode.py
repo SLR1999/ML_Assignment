@@ -18,13 +18,13 @@ def remove_outlier(df_in, col_name):
     fence_low  = q1-1.5*iqr
     fence_high = q3+1.5*iqr
     df_out = df_in.loc[(df_in[col_name] > fence_low) & (df_in[col_name] < fence_high)]
-    return df_out
+    return df_out   
 
 '''Reading csv file into a dataframe named diabetes'''
 diabetes = pd.read_csv('Pima_Indian_diabetes.csv')
 
-'''Plotting the heatmap of correlation matrix'''
-sns.heatmap(diabetes.corr(),cmap='Blues',annot=False)
+# '''Plotting the heatmap of correlation matrix'''
+# sns.heatmap(diabetes.corr(),cmap='Blues',annot=False)
 
 '''Features as columns'''
 columnNames = ["Glucose", "Insulin", "BMI", "DiabetesPedigreeFunction", "SkinThickness", "BloodPressure", "Pregnancies", "Age"]
@@ -48,8 +48,8 @@ lremove = []
 lrequired = []
 for i in range(0, len(columnNames)):
     colName = columnNames[i]
-    if (colName == "Glucose" or colName == "BMI" or colName == "BloodPressure"):
-        diabetes[colName] = diabetes[colName].replace(0, np.NaN)
+    # if (colName == "Glucose" or colName == "BMI" or colName == "BloodPressure"):
+    #     diabetes[colName] = diabetes[colName].replace(0, np.NaN)
     count = diabetes[colName].isnull().sum()
     if (colName in columnNamesIntegersPositive):
         diabetes[colName] = diabetes[colName].abs().round()
@@ -83,6 +83,13 @@ data = diabetes.drop(lremove, axis = 1)
 '''Here the outliers are removed column wise by calling the remove outlier function'''
 for var in range(len(columnNames)):
     remove_outlier(data, "Final" + columnNames[var])
+
+# df = pd.DataFrame(np.random.randn(10,8), columns=lrequired)
+# boxplot = df.boxplot(column=lrequired)
+# sns.boxplot(x="diagnosis", y="area_mean", data=data)
+# # data.boxplot(column = 'area_mean', by = 'diagnosis')
+# plt.title('')
+
 
 '''Standardizing the data using standardscaler function'''
 x = data.loc[:, lrequired].values
